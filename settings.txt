@@ -1,4 +1,0 @@
-CHANNEL=dany2001ru
-NAME=almostcatdany
-OAUTH_TOKEN=oauth:0eb26n6t32bf6zf4c7u8ug7lunvrc2
-LOCALE=ru_RU
