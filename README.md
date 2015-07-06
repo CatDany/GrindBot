@@ -1,0 +1,2 @@
+# GrindBot
+Twitch bot
