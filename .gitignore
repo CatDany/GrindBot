@@ -62,8 +62,9 @@ $RECYCLE.BIN/
 
 ### END OF AUTO-GENERATED GITIGNORE FILE ###
 
-# GrindBot logs
+# GrindBot files
 logs/*
+settings.txt
 
 # Eclipse files
 .classpath
