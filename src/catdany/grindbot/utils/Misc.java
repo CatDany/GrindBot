@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import catdany.grindbot.log.Log;
+
 import com.google.common.io.Files;
 
 public class Misc
@@ -97,5 +99,17 @@ public class Misc
 		bis.close();
 		ois.close();
 		return (T)o;
+	}
+	
+	public static void sleep(long time)
+	{
+		try
+		{
+			Thread.sleep(time);
+		}
+		catch (InterruptedException t)
+		{
+			Log.logStackTrace(t, "OMG, I can't even ResidentSleeper right now! What the heck!?");
+		}
 	}
 }

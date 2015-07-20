@@ -29,6 +29,20 @@ public class Database
 		bankDatabase.put(user, amount);
 	}
 	
+	public static boolean withdraw(String user, int amount)
+	{
+		int status = getBankStorage(user);
+		if (status < amount)
+		{
+			return false;
+		}
+		else
+		{
+			setBankStorage(user, status - amount);
+			return true;
+		}
+	}
+	
 	public static void save()
 	{
 		Log.log("Saving the database...");

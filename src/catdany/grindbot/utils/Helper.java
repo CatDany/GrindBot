@@ -17,11 +17,10 @@ public class Helper
 	
 	/**
 	 * Send a message in chat. Message text is taken from localization files.
-	 * @param user
 	 * @param key
 	 * @param args
 	 */
-	public static void chatLocal(String user, String key, Object... args)
+	public static void chatLocal(String key, Object... args)
 	{
 		Main.bot.chat(Localization.get(key, args));
 	}

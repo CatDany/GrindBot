@@ -14,6 +14,13 @@ public class Localization
 	
 	public static final String BOT_JOINED = "bot_joined";
 	public static final String YOUR_BANK_STATUS = "your_bank_status";
+	public static final String MISSION_STARTED = "mission_started";
+	public static final String MISSION_ENDED = "mission_ended";
+	public static final String MISSION_WINNERS = "mission_winners";
+	public static final String MISSION_NOT_ENOUGH_PEOPLE = "mission_not_enough_people";
+	public static final String MISSION_SIZE_SMALL = "mission_size_small";
+	public static final String MISSION_SIZE_MEDIUM = "mission_size_medium";
+	public static final String MISSION_SIZE_LARGE = "mission_size_large";
 	
 	public static String get(String key, Object... args)
 	{

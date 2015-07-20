@@ -22,6 +22,21 @@ public class Settings
 	public static String PASSIVE_GAIN_BANK;
 	public static String PASSIVE_GAIN_BANK_COOLDOWN;
 	
+	public static String MISSION_SMALL_COST;
+	public static String MISSION_SMALL_REWARD;
+	public static String MISSION_SMALL_WEIGHT;
+	public static String MISSION_SMALL_PEOPLE;
+	public static String MISSION_MEDIUM_COST;
+	public static String MISSION_MEDIUM_REWARD;
+	public static String MISSION_MEDIUM_WEIGHT;
+	public static String MISSION_MEDIUM_PEOPLE;
+	public static String MISSION_LARGE_COST;
+	public static String MISSION_LARGE_REWARD;
+	public static String MISSION_LARGE_WEIGHT;
+	public static String MISSION_LARGE_PEOPLE;
+	public static String MISSION_COOLDOWN;
+	public static String MISSION_ENTRY_TIME;
+	
 	public static void reload()
 	{
 		Log.log("Loading settings...");

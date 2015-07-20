@@ -60,6 +60,11 @@ public class Log
 		}
 	}
 	
+	public static void logWithException(String format, Object... args)
+	{
+		logStackTrace(new GrindBotException(String.format(format, args)), format, args);
+	}
+	
 	public static void logStackTrace(Throwable t, String format, Object... args)
 	{
 		Log.log("%s\n%s", String.format(format, args), ExceptionUtils.getStackTrace(t));

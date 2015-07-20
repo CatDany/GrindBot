@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import catdany.grindbot.grind.Database;
 import catdany.grindbot.log.Log;
 
 public class Console implements Runnable
@@ -35,6 +36,20 @@ public class Console implements Runnable
 				else if (in.startsWith("stop"))
 				{
 					System.exit(0);
+				}
+				else if (in.startsWith("setbank"))
+				{
+					String[] args = in.split(" ", 3);
+					String user = args[1].toLowerCase();
+					int amount = Integer.parseInt(args[2]);
+					Database.setBankStorage(user, amount);
+				}
+				else if (in.startsWith("addbank"))
+				{
+					String[] args = in.split(" ", 3);
+					String user = args[1].toLowerCase();
+					int amount = Integer.parseInt(args[2]);
+					Database.setBankStorage(user, Database.getBankStorage(user) + amount);
 				}
 				else
 				{

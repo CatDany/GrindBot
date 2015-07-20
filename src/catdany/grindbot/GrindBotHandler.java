@@ -11,6 +11,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
 import catdany.grindbot.grind.Database;
+import catdany.grindbot.grind.Mission;
 import catdany.grindbot.log.Log;
 import catdany.grindbot.utils.Helper;
 
@@ -52,6 +53,11 @@ public class GrindBotHandler implements Listener<GrindBot>
 		String msg = me.getMessage();
 		String user = me.getUser().getNick();
 		Log.log("[CHAT] %s: %s", user, msg);
+		if (!users.contains(user))
+		{
+			users.add(user);
+			Log.log("User joined [msg-join]: %s", user);
+		}
 		if (!active && msg.startsWith("$run") && user.equals(Settings.CHANNEL))
 		{
 			active = true;
@@ -67,6 +73,22 @@ public class GrindBotHandler implements Listener<GrindBot>
 				int amount = Database.getBankStorage(user);
 				Helper.chatLocal(user, Localization.YOUR_BANK_STATUS, user, amount);
 				Log.log("%s checked his bank status (%s)", user, amount);
+			}
+			// Enter a mission
+			else if (msg.equals("$m") && Mission.currentMission != null)
+			{
+				if (Database.withdraw(user, Mission.currentMission.getCost()))
+				{
+					if (!Mission.currentMission.entries.contains(user))
+					{
+						Mission.currentMission.entries.add(user);
+						Log.log("%s joined a mission party.", user);
+					}
+				}
+				else
+				{
+					Log.log("%s couldn't join a mission party, because he didn't have enough money. Status: <%s>. Required: <%s>", user, Database.getBankStorage(user), Mission.currentMission.getCost());
+				}
 			}
 		}
 	}
@@ -89,7 +111,7 @@ public class GrindBotHandler implements Listener<GrindBot>
 		String user = je.getUser().getNick();
 		if (!users.contains(user))
 		{
-			users.add(je.getUser().getNick());
+			users.add(user);
 		}
 		Log.log("User joined: %s", user);
 	}
@@ -109,6 +131,7 @@ public class GrindBotHandler implements Listener<GrindBot>
 		Settings.reload();
 		Localization.reload();
 		Database.load();
+		Mission.init();
 		
 		Builder<GrindBot> builder = new Builder<GrindBot>();
 		builder
