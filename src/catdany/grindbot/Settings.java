@@ -19,6 +19,9 @@ public class Settings
 	public static String OAUTH_TOKEN;
 	public static String LOCALE;
 	
+	public static String PASSIVE_GAIN_BANK;
+	public static String PASSIVE_GAIN_BANK_COOLDOWN;
+	
 	public static void reload()
 	{
 		Log.log("Loading settings...");

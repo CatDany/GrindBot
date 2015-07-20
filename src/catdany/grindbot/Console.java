@@ -32,6 +32,10 @@ public class Console implements Runnable
 					Settings.reload();
 					Localization.reload();
 				}
+				else if (in.startsWith("stop"))
+				{
+					System.exit(0);
+				}
 				else
 				{
 					Log.log("Unable to recognize the input data. Maybe the command is incorrect or doesn't exist.");

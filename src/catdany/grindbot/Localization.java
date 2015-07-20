@@ -13,24 +13,31 @@ public class Localization
 	public static final HashMap<String, String> localizationMap = new HashMap<String, String>();
 	
 	public static final String BOT_JOINED = "bot_joined";
+	public static final String YOUR_BANK_STATUS = "your_bank_status";
 	
 	public static String get(String key, Object... args)
 	{
 		if (localizationMap.containsKey(key))
 		{
-			//
+			if (args.length == 0)
+			{
+				return localizationMap.get(key);
+			}
+			else
+			{
+				return String.format(localizationMap.get(key), args);
+			}
 		}
 		else
 		{
-			return String.format("%s[%s]", key, Misc.arrayToString(";", args));
-		}
-		if (args.length == 0)
-		{
-			return localizationMap.get(key);
-		}
-		else
-		{
-			return String.format(localizationMap.get(key), args);
+			if (args.length == 0)
+			{
+				return key;
+			}
+			else
+			{
+				return String.format("%s[%s]", key, Misc.arrayToString(";", args));
+			}
 		}
 	}
 	

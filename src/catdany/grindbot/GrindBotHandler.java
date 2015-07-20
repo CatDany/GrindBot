@@ -1,10 +1,14 @@
 package catdany.grindbot;
 
+import java.util.ArrayList;
+
 import org.apache.commons.codec.Charsets;
 import org.pircbotx.Configuration.Builder;
 import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.Listener;
+import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.pircbotx.hooks.events.QuitEvent;
 
 import catdany.grindbot.grind.Database;
 import catdany.grindbot.log.Log;
@@ -14,34 +18,90 @@ public class GrindBotHandler implements Listener<GrindBot>
 {
 	private boolean active = false;
 	
+	ArrayList<String> users = new ArrayList<String>();
+	
 	@Override
 	public void onEvent(Event<GrindBot> e) throws Exception
 	{
 		try
 		{
-		if (e instanceof MessageEvent)
-		{
-			MessageEvent<GrindBot> me = (MessageEvent<GrindBot>)e;
-			String msg = me.getMessage();
-			String user = me.getUser().getNick();
-			Log.log("[CHAT] %s: %s", user, msg);
-			Helper.chat("%s", Localization.get("debug_response", user, msg)); // FIXME: Debug code
-			if (!active && msg.startsWith("%activate") && user.equals(Settings.CHANNEL))
+			if (e instanceof MessageEvent)
 			{
-				active = true;
-				Helper.chat(Localization.get(Localization.BOT_JOINED));
-				Log.log("Bot has been activated by %s", user);
+				MessageEvent<GrindBot> me = (MessageEvent<GrindBot>)e;
+				onMessage(me);
 			}
-			if (active)
+			else if (e instanceof JoinEvent)
 			{
-				//
+				JoinEvent<GrindBot> je = (JoinEvent<GrindBot>)e;
+				onJoin(je);
 			}
-		}
+			else if (e instanceof QuitEvent)
+			{
+				QuitEvent<GrindBot> qe = (QuitEvent<GrindBot>)e;
+				onQuit(qe);
+			}
 		}
 		catch (Throwable t)
 		{
 			Log.logStackTrace(t, "An exception was caught while trying to process an event (%s)", e.getClass().getName());
 		}
+	}
+	
+	private void onMessage(MessageEvent<GrindBot> me) throws Exception
+	{
+		String msg = me.getMessage();
+		String user = me.getUser().getNick();
+		Log.log("[CHAT] %s: %s", user, msg);
+		if (!active && msg.startsWith("$run") && user.equals(Settings.CHANNEL))
+		{
+			active = true;
+			new Thread(Main.bot, "GrindBot-Tick").start();
+			Helper.chat(Localization.get(Localization.BOT_JOINED));
+			Log.log("Bot has been activated by %s", user);
+		}
+		if (active)
+		{
+			// Bank Storage
+			if (msg.equals("$"))
+			{
+				int amount = Database.getBankStorage(user);
+				Helper.chatLocal(user, Localization.YOUR_BANK_STATUS, user, amount);
+				Log.log("%s checked his bank status (%s)", user, amount);
+			}
+		}
+	}
+	
+	/* Not working with Twitch IRC
+	@Deprecated
+	private void onUserList(UserListEvent<GrindBot> ule) throws Exception
+	{
+		users.clear();
+		for (User i : ule.getUsers())
+		{
+			users.add(i.getNick());
+		}
+		Log.log("User list received <%s>: %s", users.size(), Misc.arrayToString(", ", users.toArray()));
+	}
+	*/
+	
+	private void onJoin(JoinEvent<GrindBot> je) throws Exception
+	{
+		String user = je.getUser().getNick();
+		if (!users.contains(user))
+		{
+			users.add(je.getUser().getNick());
+		}
+		Log.log("User joined: %s", user);
+	}
+	
+	private void onQuit(QuitEvent<GrindBot> qe) throws Exception
+	{
+		String user = qe.getUser().getNick();
+		if (users.contains(user))
+		{
+			users.remove(user);
+		}
+		Log.log("User quit: %s", user);
 	}
 	
 	GrindBot init()
@@ -65,9 +125,9 @@ public class GrindBotHandler implements Listener<GrindBot>
 		final GrindBot bot = new GrindBot(builder.buildConfiguration());
 		
 		Log.log("Logging in...");
-		Log.log("Type %activate in chat as a broadcaster to activate a bot and finish the logging process.");
+		Log.log("Type $run in chat as a broadcaster to activate a bot and finish the logging process.");
 		
-		new Thread() {
+		new Thread("Bot-StartBot-Thread") {
 			public void run()
 			{
 				try
@@ -80,6 +140,12 @@ public class GrindBotHandler implements Listener<GrindBot>
 				}
 			}
 		}.start();
+		
+		while (!bot.isConnected()) {}
+		
+		Log.log("Requesting capabilities: membership, commands...");
+		bot.raw("CAP REQ :twitch.tv/membership");
+		bot.raw("CAP REQ :twitch.tv/commands");
 		
 		return bot;
 	}

@@ -3,14 +3,31 @@ package catdany.grindbot.grind;
 import java.io.File;
 import java.util.HashMap;
 
-import com.google.common.io.Files;
-
 import catdany.grindbot.log.Log;
 import catdany.grindbot.utils.Misc;
 
+import com.google.common.io.Files;
+
 public class Database
 {
-	public static HashMap<String, Integer> bankDatabase = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> bankDatabase = new HashMap<String, Integer>();
+	
+	public static int getBankStorage(String user)
+	{
+		if (bankDatabase.containsKey(user))
+		{
+			return bankDatabase.get(user);
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	public static void setBankStorage(String user, int amount)
+	{
+		bankDatabase.put(user, amount);
+	}
 	
 	public static void save()
 	{
