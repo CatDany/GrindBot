@@ -87,14 +87,13 @@ public class Helper
 	
 	private static long lastTopList = 0;
 	
-	@SuppressWarnings("unchecked")
 	public static void listTop()
 	{
 		long cooldown = Integer.parseInt(Settings.LIST_TOP_COOLDOWN) * 1000;
 		long time = Misc.time();
 		if (lastTopList + cooldown < time)
 		{
-			Helper.chatLocal(Localization.LIST_TOP, Settings.LIST_TOP_AMOUNT, Misc.arrayToStringNum(", ", Database.getTopUsers(Integer.parseInt(Settings.LIST_TOP_AMOUNT)).toArray(new String[0])));
+			Helper.chatLocal(Localization.LIST_TOP, Settings.LIST_TOP_AMOUNT, Misc.arrayToStringNum(" | ", Database.getTopUsers(Integer.parseInt(Settings.LIST_TOP_AMOUNT)).toArray(new String[0])));
 		}
 	}
 }

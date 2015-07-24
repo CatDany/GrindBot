@@ -34,7 +34,7 @@ public class Database
 		List<Entry<String, Integer>> top = Misc.getTop((HashMap<String, Integer>)bankDatabase.clone(), amount);
 		for (Entry<String, Integer> i : top)
 		{
-			list.add(i.getKey());
+			list.add(i.getKey() + " [" + i.getValue() + "]");
 		}
 		return list;
 	}

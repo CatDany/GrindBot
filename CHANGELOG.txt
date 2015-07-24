@@ -1,3 +1,6 @@
+v0.4:
+- Now $top also shows the amount of bank value (coins)
+
 v0.3:
 - Added top users (best bank status)
 
