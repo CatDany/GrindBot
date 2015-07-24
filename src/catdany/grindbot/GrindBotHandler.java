@@ -11,13 +11,14 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 
 import catdany.grindbot.grind.Database;
+import catdany.grindbot.grind.Giveaway;
 import catdany.grindbot.grind.Mission;
 import catdany.grindbot.log.Log;
 import catdany.grindbot.utils.Helper;
 
 public class GrindBotHandler implements Listener<GrindBot>
 {
-	private boolean active = false;
+	boolean active = false;
 	
 	ArrayList<String> users = new ArrayList<String>();
 	
@@ -71,7 +72,7 @@ public class GrindBotHandler implements Listener<GrindBot>
 			if (msg.equals("$"))
 			{
 				int amount = Database.getBankStorage(user);
-				Helper.chatLocal(user, Localization.YOUR_BANK_STATUS, user, amount);
+				Helper.chatLocal(Localization.YOUR_BANK_STATUS, user, amount);
 				Log.log("%s checked his bank status (%s)", user, amount);
 			}
 			// Enter a mission
@@ -89,6 +90,20 @@ public class GrindBotHandler implements Listener<GrindBot>
 				{
 					Log.log("%s couldn't join a mission party, because he didn't have enough money. Status: <%s>. Required: <%s>", user, Database.getBankStorage(user), Mission.currentMission.getCost());
 				}
+			}
+			// Enter a giveaway
+			else if (msg.startsWith("$g") && Giveaway.currentGiveaway != null)
+			{
+				try
+				{
+					Giveaway.currentGiveaway.addTickets(user, Integer.parseInt(msg.trim().substring(3)));
+				}
+				catch (NumberFormatException t) {}
+			}
+			// List top
+			else if (msg.equals("$top"))
+			{
+				Helper.listTop();
 			}
 		}
 	}

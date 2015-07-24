@@ -37,6 +37,9 @@ public class Settings
 	public static String MISSION_COOLDOWN;
 	public static String MISSION_ENTRY_TIME;
 	
+	public static String LIST_TOP_COOLDOWN;
+	public static String LIST_TOP_AMOUNT;
+	
 	public static void reload()
 	{
 		Log.log("Loading settings...");

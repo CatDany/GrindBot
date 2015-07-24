@@ -1,7 +1,9 @@
 package catdany.grindbot.grind;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import catdany.grindbot.log.Log;
 import catdany.grindbot.utils.Misc;
@@ -22,6 +24,18 @@ public class Database
 		{
 			return 0;
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static ArrayList<String> getTopUsers(int amount)
+	{
+		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<Entry<String, Integer>> top = Misc.getTop((HashMap<String, Integer>)bankDatabase.clone(), amount);
+		for (Entry<String, Integer> i : top)
+		{
+			list.add(i.getKey());
+		}
+		return list;
 	}
 	
 	public static void setBankStorage(String user, int amount)

@@ -99,6 +99,10 @@ public class GrindBot extends PircBotX implements Runnable
 					Helper.chatLocal(Localization.MISSION_ENDED, Mission.currentMission.name, Mission.currentMission.getLocalizedSize());
 					Misc.sleep(1000);
 					Helper.chatLocal(Localization.MISSION_WINNERS, Mission.currentMission.getReward(), Misc.arrayToString(", ", winners));
+					for (String i : winners)
+					{
+						Database.setBankStorage(i, Database.getBankStorage(i) + Mission.currentMission.getReward());
+					}
 				}
 				Mission.currentMission = null;
 			}

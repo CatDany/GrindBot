@@ -1,0 +1,13 @@
+bot_joined=Bot has been activated. Hello everyone PogChamp
+your_bank_status=%s, you currently have %s coins :o
+mission_started=A mission "%s" (%s) has started! We need a party of %s people (or more). Entry cost: %s coins. Type $m in chat in order to join!
+mission_ended=A party for "%s" (%s) has been formed.
+mission_winners=Some people managed to get some loot: %s coins [%s]
+mission_not_enough_people=We don't have enough people for mission "%s" (%s). We only have %s out of %s required.
+mission_size_small=S
+mission_size_medium=M
+mission_size_large=L
+giveaway_start=Giveaway is about to begin. We're giving away "%s". A ticket cost is %s coins, but you can only get %s of them. Type $g in chat and follow it with the amount of tickets you want to buy.
+giveaway_soon=Giveaway is starting in 15 seconds...
+giveaway_go=PogChamp GIVEAWAY!!!!111 GO! GO! GOOOO! PogChamp
+giveaway_end=Aaand.. We have a winner! PogChamp %s won with %s tickets. Chat spam congratulations!

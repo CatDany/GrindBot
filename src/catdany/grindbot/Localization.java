@@ -14,6 +14,7 @@ public class Localization
 	
 	public static final String BOT_JOINED = "bot_joined";
 	public static final String YOUR_BANK_STATUS = "your_bank_status";
+	
 	public static final String MISSION_STARTED = "mission_started";
 	public static final String MISSION_ENDED = "mission_ended";
 	public static final String MISSION_WINNERS = "mission_winners";
@@ -21,6 +22,13 @@ public class Localization
 	public static final String MISSION_SIZE_SMALL = "mission_size_small";
 	public static final String MISSION_SIZE_MEDIUM = "mission_size_medium";
 	public static final String MISSION_SIZE_LARGE = "mission_size_large";
+	
+	public static final String GIVEAWAY_START = "giveaway_start";
+	public static final String GIVEAWAY_SOON = "giveaway_soon";
+	public static final String GIVEAWAY_GO = "giveaway_go";
+	public static final String GIVEAWAY_END = "giveaway_end";
+	
+	public static final String LIST_TOP = "list_top";
 	
 	public static String get(String key, Object... args)
 	{

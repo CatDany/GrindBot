@@ -2,6 +2,8 @@ package catdany.grindbot.utils;
 
 import catdany.grindbot.Localization;
 import catdany.grindbot.Main;
+import catdany.grindbot.Settings;
+import catdany.grindbot.grind.Database;
 
 public class Helper
 {
@@ -81,5 +83,18 @@ public class Helper
 			arrayClone[i] = fixString(array[i].toString());
 		}
 		return arrayClone;
+	}
+	
+	private static long lastTopList = 0;
+	
+	@SuppressWarnings("unchecked")
+	public static void listTop()
+	{
+		long cooldown = Integer.parseInt(Settings.LIST_TOP_COOLDOWN) * 1000;
+		long time = Misc.time();
+		if (lastTopList + cooldown < time)
+		{
+			Helper.chatLocal(Localization.LIST_TOP, Settings.LIST_TOP_AMOUNT, Misc.arrayToString(", ", Database.getTopUsers(Integer.parseInt(Settings.LIST_TOP_AMOUNT))));
+		}
 	}
 }
