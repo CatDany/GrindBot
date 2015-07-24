@@ -11,3 +11,4 @@ giveaway_start=Giveaway is about to begin. We're giving away "%s". A ticket cost
 giveaway_soon=Giveaway is starting in 15 seconds...
 giveaway_go=PogChamp GIVEAWAY!!!!111 GO! GO! GOOOO! PogChamp
 giveaway_end=Aaand.. We have a winner! PogChamp %s won with %s tickets. Chat spam congratulations!
+list_top=Top-%s users: %s

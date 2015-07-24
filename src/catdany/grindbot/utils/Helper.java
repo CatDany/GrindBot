@@ -94,7 +94,7 @@ public class Helper
 		long time = Misc.time();
 		if (lastTopList + cooldown < time)
 		{
-			Helper.chatLocal(Localization.LIST_TOP, Settings.LIST_TOP_AMOUNT, Misc.arrayToString(", ", Database.getTopUsers(Integer.parseInt(Settings.LIST_TOP_AMOUNT))));
+			Helper.chatLocal(Localization.LIST_TOP, Settings.LIST_TOP_AMOUNT, Misc.arrayToStringNum(", ", Database.getTopUsers(Integer.parseInt(Settings.LIST_TOP_AMOUNT)).toArray(new String[0])));
 		}
 	}
 }

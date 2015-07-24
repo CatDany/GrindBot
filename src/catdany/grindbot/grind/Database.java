@@ -3,6 +3,7 @@ package catdany.grindbot.grind;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import catdany.grindbot.log.Log;
@@ -30,7 +31,7 @@ public class Database
 	public static ArrayList<String> getTopUsers(int amount)
 	{
 		ArrayList<String> list = new ArrayList<String>();
-		ArrayList<Entry<String, Integer>> top = Misc.getTop((HashMap<String, Integer>)bankDatabase.clone(), amount);
+		List<Entry<String, Integer>> top = Misc.getTop((HashMap<String, Integer>)bankDatabase.clone(), amount);
 		for (Entry<String, Integer> i : top)
 		{
 			list.add(i.getKey());

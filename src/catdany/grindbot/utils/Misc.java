@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
@@ -18,6 +19,7 @@ import java.util.Random;
 
 import catdany.grindbot.log.Log;
 
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 public class Misc
@@ -79,6 +81,20 @@ public class Misc
 		return str;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T>String arrayToStringNum(String separator, T... array)
+	{
+		String str = "";
+		int count = 0;
+		for (T i : array)
+		{
+			count++;
+			str += count + ". " + i.toString() + separator;
+		}
+		str = str.substring(0, str.length() - separator.length());
+		return str;
+	}
+	
 	public static void writeToFile(File file, byte[] bytes) throws IOException
 	{
 		Files.write(bytes, file);
@@ -118,7 +134,7 @@ public class Misc
 		}
 	}
 	
-	public static <K, V extends Comparable<? super V>> ArrayList<Entry<K, V>> getTop(Map<K, V> map, int n)
+	public static <K, V extends Comparable<? super V>> List<Entry<K, V>> getTop(Map<K, V> map, int n)
 	{
 		Comparator<? super Entry<K, V>> comparator = new Comparator<Entry<K, V>>()
 		{
@@ -148,6 +164,6 @@ public class Misc
 		{
 			result.add(highest.poll());
 		}
-		return result;
+		return Lists.reverse(result);
 	}
 }
