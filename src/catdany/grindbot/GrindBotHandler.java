@@ -8,13 +8,15 @@ import org.pircbotx.hooks.Event;
 import org.pircbotx.hooks.Listener;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
-import org.pircbotx.hooks.events.QuitEvent;
+import org.pircbotx.hooks.events.PartEvent;
 
+import catdany.grindbot.grind.CollectionDB;
 import catdany.grindbot.grind.Database;
 import catdany.grindbot.grind.Giveaway;
 import catdany.grindbot.grind.Mission;
 import catdany.grindbot.log.Log;
 import catdany.grindbot.utils.Helper;
+import catdany.grindbot.utils.Misc;
 
 public class GrindBotHandler implements Listener<GrindBot>
 {
@@ -37,10 +39,10 @@ public class GrindBotHandler implements Listener<GrindBot>
 				JoinEvent<GrindBot> je = (JoinEvent<GrindBot>)e;
 				onJoin(je);
 			}
-			else if (e instanceof QuitEvent)
+			else if (e instanceof PartEvent)
 			{
-				QuitEvent<GrindBot> qe = (QuitEvent<GrindBot>)e;
-				onQuit(qe);
+				PartEvent<GrindBot> pe = (PartEvent<GrindBot>)e;
+				onPart(pe);
 			}
 		}
 		catch (Throwable t)
@@ -51,59 +53,90 @@ public class GrindBotHandler implements Listener<GrindBot>
 	
 	private void onMessage(MessageEvent<GrindBot> me) throws Exception
 	{
-		String msg = me.getMessage();
-		String user = me.getUser().getNick();
-		Log.log("[CHAT] %s: %s", user, msg);
-		if (!users.contains(user))
+		if (me.getChannel().getName().equals("#" + Settings.CHANNEL))
 		{
-			users.add(user);
-			Log.log("User joined [msg-join]: %s", user);
-		}
-		if (!active && msg.startsWith("$run") && user.equals(Settings.CHANNEL))
-		{
-			active = true;
-			new Thread(Main.bot, "GrindBot-Tick").start();
-			Helper.chat(Localization.get(Localization.BOT_JOINED));
-			Log.log("Bot has been activated by %s", user);
-		}
-		if (active)
-		{
-			// Bank Storage
-			if (msg.equals("$"))
+			String msg = me.getMessage();
+			String user = me.getUser().getNick();
+			Log.log("[CHAT] %s: %s", user, msg);
+			if (!users.contains(user))
 			{
-				int amount = Database.getBankStorage(user);
-				Helper.chatLocal(Localization.YOUR_BANK_STATUS, user, amount);
-				Log.log("%s checked his bank status (%s)", user, amount);
+				users.add(user);
+				Log.log("User joined [msg-join]: %s", user);
 			}
-			// Enter a mission
-			else if (msg.equals("$m") && Mission.currentMission != null)
+			if (!active && msg.startsWith("$run") && user.equals(Settings.CHANNEL))
 			{
-				if (Database.withdraw(user, Mission.currentMission.getCost()))
+				active = true;
+				new Thread(Main.bot, "GrindBot-Tick").start();
+				Helper.chat(Localization.get(Localization.BOT_JOINED));
+				Log.log("Bot has been activated by %s", user);
+			}
+			if (active)
+			{
+				// Bank Storage
+				if (msg.equals("$"))
 				{
-					if (!Mission.currentMission.entries.contains(user))
+					int amount = Database.getBankStorage(user);
+					Helper.chatLocal(Localization.YOUR_BANK_STATUS, user, amount);
+					Log.log("%s checked his bank status (%s)", user, amount);
+				}
+				// Enter a mission
+				else if (msg.equals("$m") && Mission.currentMission != null)
+				{
+					if (Database.withdraw(user, Mission.currentMission.getCost()))
 					{
-						Mission.currentMission.entries.add(user);
-						Log.log("%s joined a mission party.", user);
+						if (!Mission.currentMission.entries.contains(user))
+						{
+							Mission.currentMission.entries.add(user);
+							Log.log("%s joined a mission party.", user);
+						}
+					}
+					else
+					{
+						Log.log("%s couldn't join a mission party, because he didn't have enough money. Status: <%s>. Required: <%s>", user, Database.getBankStorage(user), Mission.currentMission.getCost());
 					}
 				}
-				else
+				// Enter a giveaway
+				else if (msg.startsWith("$g") && Giveaway.currentGiveaway != null)
 				{
-					Log.log("%s couldn't join a mission party, because he didn't have enough money. Status: <%s>. Required: <%s>", user, Database.getBankStorage(user), Mission.currentMission.getCost());
+					try
+					{
+						Giveaway.currentGiveaway.addTickets(user, Integer.parseInt(msg.trim().substring(3)));
+					}
+					catch (NumberFormatException t) {}
 				}
-			}
-			// Enter a giveaway
-			else if (msg.startsWith("$g") && Giveaway.currentGiveaway != null)
-			{
-				try
+				// List top
+				else if (msg.equals("$top"))
 				{
-					Giveaway.currentGiveaway.addTickets(user, Integer.parseInt(msg.trim().substring(3)));
+					Helper.listTop();
 				}
-				catch (NumberFormatException t) {}
-			}
-			// List top
-			else if (msg.equals("$top"))
-			{
-				Helper.listTop();
+				// Bot info
+				else if (msg.equals("$info"))
+				{
+					Helper.chatLocal(Localization.BOT_INFO);
+				}
+				// Collection Overview
+				else if (msg.equals("$v"))
+				{
+					Helper.chatLocal(Localization.COLLECTION_OVERVIEW, user, user);
+				}
+				// Buy collection box
+				else if (msg.equals("$" + Settings.COLLECTION_NAME))
+				{
+					long time = Misc.time();
+					if (Database.withdraw(user, Integer.parseInt(Settings.COLLECTION_BOX_COST)) && CollectionDB.lastCollectionBoxPurchase + 10000 < time)
+					{
+						CollectionDB.lastCollectionBoxPurchase = time;
+						new Thread("CollectionBoxAnnouncement-" + Math.random())
+						{
+							public void run()
+							{
+								Helper.chatLocal(Localization.COLLECTION_BOX_PURCHASE, user);
+								Misc.sleep(3500);
+								CollectionDB.openBox(user);
+							}
+						}.start();
+					}
+				}
 			}
 		}
 	}
@@ -123,22 +156,28 @@ public class GrindBotHandler implements Listener<GrindBot>
 	
 	private void onJoin(JoinEvent<GrindBot> je) throws Exception
 	{
-		String user = je.getUser().getNick();
-		if (!users.contains(user))
+		if (je.getChannel().getName().equals("#" + Settings.CHANNEL))
 		{
-			users.add(user);
+			String user = je.getUser().getNick();
+			if (!users.contains(user))
+			{
+				users.add(user);
+			}
+			Log.log("User joined: %s", user);
 		}
-		Log.log("User joined: %s", user);
 	}
 	
-	private void onQuit(QuitEvent<GrindBot> qe) throws Exception
+	private void onPart(PartEvent<GrindBot> pe) throws Exception
 	{
-		String user = qe.getUser().getNick();
-		if (users.contains(user))
+		if (pe.getChannel().getName().equals("#" + Settings.CHANNEL))
 		{
-			users.remove(user);
+			String user = pe.getUser().getNick();
+			if (users.contains(user))
+			{
+				users.remove(user);
+			}
+			Log.log("User quit: %s", user);
 		}
-		Log.log("User quit: %s", user);
 	}
 	
 	GrindBot init()
@@ -146,6 +185,8 @@ public class GrindBotHandler implements Listener<GrindBot>
 		Settings.reload();
 		Localization.reload();
 		Database.load();
+		CollectionDB.loadCollection();
+		CollectionDB.load();
 		Mission.init();
 		
 		Builder<GrindBot> builder = new Builder<GrindBot>();

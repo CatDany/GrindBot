@@ -4,7 +4,7 @@ import catdany.grindbot.log.Log;
 
 public class Main
 {
-	public static final String VERSION = "0.4 Internal Testing Build from 2015-07-24";
+	public static final String VERSION = "0.6-BRANCH-COLLECTION Internal Testing Build from 2015-08-26";
 	
 	public static Console console;
 	public static GrindBotHandler botHandler;

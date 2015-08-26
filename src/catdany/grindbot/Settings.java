@@ -40,6 +40,10 @@ public class Settings
 	public static String LIST_TOP_COOLDOWN;
 	public static String LIST_TOP_AMOUNT;
 	
+	public static String COLLECTION_NAME;
+	public static String COLLECTION_BOX_COST;
+	public static String COLLECTION_SYNC_URL;
+	
 	public static void reload()
 	{
 		Log.log("Loading settings...");

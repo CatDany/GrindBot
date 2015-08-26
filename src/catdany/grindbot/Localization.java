@@ -29,6 +29,13 @@ public class Localization
 	public static final String GIVEAWAY_END = "giveaway_end";
 	
 	public static final String LIST_TOP = "list_top";
+	public static final String BOT_INFO = "bot_info";
+	
+	public static final String COLLECTION_BOX_PURCHASE = "collection_box_purchase";
+	public static final String COLLECTION_BOX_OPEN = "collection_box_open";
+	public static final String COLLECTION_BOX_OPEN_DUPLICATE = "collection_box_open_duplicate";
+	public static final String COLLECTION_OVERVIEW = "collection_overview";
+	public static final String COLLECTION_RARITY_ = "collection_rarity_";
 	
 	public static String get(String key, Object... args)
 	{

@@ -41,7 +41,7 @@ public class GrindBot extends PircBotX implements Runnable
 	@Deprecated
 	public void priv(String user, String input)
 	{
-		irc.message("#" + Settings.CHANNEL, String.format(".w %s %s", user, input));
+		irc.message("#jtv", String.format("/w %s %s", user, input));
 		Log.log("[PRIV] %s -> %s: %s", Settings.NAME, user, input);
 	}
 	

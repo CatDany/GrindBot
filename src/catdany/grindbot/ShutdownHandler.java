@@ -1,5 +1,6 @@
 package catdany.grindbot;
 
+import catdany.grindbot.grind.CollectionDB;
 import catdany.grindbot.grind.Database;
 import catdany.grindbot.log.Log;
 
@@ -10,6 +11,7 @@ public class ShutdownHandler implements Runnable
 	{
 		Log.log("It seems like we're shutting down. Attempting to finish...");
 		Database.save();
+		CollectionDB.save();
 	}
 	
 	public static void init()

@@ -12,3 +12,13 @@ giveaway_soon=Giveaway is starting in 15 seconds...
 giveaway_go=PogChamp GIVEAWAY!!!!111 GO! GO! GOOOO! PogChamp
 giveaway_end=Aaand.. We have a winner! PogChamp %s won with %s tickets. Chat spam congratulations!
 list_top=Top-%s users: %s
+bot_info=Bot info: *insert link here*
+collection_box_purchase=%s purchased a box with a collectible item!
+collection_box_open=%s opened a box and got "%s" (%s) PogChamp
+collection_box_open_duplicate=%s opened a box and got "%s (%s), but unfortunately they already had it FeelsBadMan
+collection_overview=%s -> You can see your collection at http://grindbot.hoppix.ru/view.php?user=%s
+collection_rarity_common=Common
+collection_rarity_uncommon=Uncommon
+collection_rarity_rare=Rare
+collection_rarity_epic=EPIC
+collection_rarity_legendary=LEGENDARY

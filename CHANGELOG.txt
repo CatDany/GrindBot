@@ -1,11 +1,17 @@
-v0.4:
+v0.6-BRANCH-COLLECTION:
+- Fixed bank abuse. Replaced QuitEvent with PartEvent.
+
+v0.5-BRANCH-MAIN:
+- Added $info command that prints out "bot_info" localization line
+
+v0.4-BRANCH-MAIN:
 - Now $top also shows the amount of bank value (coins)
 
-v0.3:
+v0.3-BRANCH-MAIN:
 - Added top users (best bank status)
 
-v0.2:
+v0.2-BRANCH-MAIN:
 - Fixed "your_bank_status" localization line
 
-v0.1:
+v0.1-BRANCH-MAIN:
 - Initial release

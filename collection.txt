@@ -1,0 +1,5 @@
+common A Common Collectible
+uncommon An Uncommon Collectible
+rare A Rare Collectible
+epic An Epic Collectible
+legendary The One And Only, Legendary Collectible!

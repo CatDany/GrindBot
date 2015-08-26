@@ -95,7 +95,7 @@ public class Database
 			else
 			{
 				bankDatabase = Misc.deserialize(bankDatabase, Files.toByteArray(bankFile));
-				Log.log("Database loaded");
+				Log.log("Database loaded.");
 			}
 		}
 		catch (Throwable t)
