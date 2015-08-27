@@ -123,7 +123,7 @@ public class GrindBotHandler implements Listener<GrindBot>
 				else if (msg.equals("$" + Settings.COLLECTION_NAME))
 				{
 					long time = Misc.time();
-					if (Database.withdraw(user, Integer.parseInt(Settings.COLLECTION_BOX_COST)) && CollectionDB.lastCollectionBoxPurchase + 10000 < time)
+					if (CollectionDB.lastCollectionBoxPurchase + 10000 < time && Database.withdraw(user, Integer.parseInt(Settings.COLLECTION_BOX_COST)))
 					{
 						CollectionDB.lastCollectionBoxPurchase = time;
 						new Thread("CollectionBoxAnnouncement-" + Math.random())
