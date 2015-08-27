@@ -1,5 +1,9 @@
+v0.7-BRANCH-COLLECTION:
+- Fixed: "When you try to purchase a collectible box and the command is on cooldown, bank currency will be withdrawn but you won't get a box FeelsBadMan"
+
 v0.6-BRANCH-COLLECTION:
 - Fixed bank abuse. Replaced QuitEvent with PartEvent.
+- Added functionality for collectibles purchased with bank currency 
 
 v0.5-BRANCH-MAIN:
 - Added $info command that prints out "bot_info" localization line
